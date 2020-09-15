@@ -38,7 +38,7 @@
 						<div class="row align-items-center">
 							<div class="col-lg-6">
 								<div class="welcome-message">
-									<p>欢迎来到XXXXzhangyu</p>
+									<p>欢迎你：<span id="username"></span></p>
 								</div>
 							</div>
 						</div>
@@ -76,7 +76,7 @@
 
 													<ul class="dropdown">
 														<li>
-															<a href="#">山地自行车</a>
+															<a href="shop.html" onclick="getbicycleByTypeid(1)">山地自行车</a>
 														</li>
 														<li>
 															<a href="#">公路自行车</a>
@@ -260,7 +260,7 @@
 						<div class="col-md-4">
 							<div class="banner-item mb-30">
 								<figure class="banner-thumb">
-									<a href="#">
+									<a href="javascript:void(0);" onclick="getbicycleByTypeid(1)">
 										<img src="assets/img/banner/20200330101803_255.png" alt="">
 									</a>
 									<figcaption class="banner-content">
@@ -630,6 +630,14 @@
 		<script src="assets/js/vendor.js"></script>
 		<!-- Active Js -->
 		<script src="assets/js/active.js"></script>
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.cookie.js"></script>
+		<script src="assets/js/data.tools.js"></script>
+		<script src="assets/js/data.dispose.js"></script>
+		
+		<script>
+			
+		</script>
 	</body>
 
 </html>

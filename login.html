@@ -228,12 +228,12 @@
 							<div class="col-lg-6" style="margin-left: 300px; margin-top: -38px;">
 								<div class="login-reg-form-wrap">
 									<h2 style="margin-left: 230px;">登录</h2>
-									<form action="#" method="post">
+									<form id="loginForm" onsubmit="return false" action="##" method="post">
 										<div class="single-input-item">
-											<input type="email" placeholder="请输入用户名" required />
+											<input type="email" id="email" name="email" placeholder="请输入您的邮箱" required />
 										</div>
 										<div class="single-input-item">
-											<input type="password" placeholder="请输入密码" required />
+											<input type="password" id="password" name="password" placeholder="请输入密码" required />
 										</div>
 										<div class="single-input-item">
 											<div class="login-reg-form-meta d-flex align-items-center justify-content-between">
@@ -247,7 +247,7 @@
 											</div>
 										</div>
 										<div class="single-input-item">
-											<button class="btn btn__bg">登录</button>
+											<button class="btn btn__bg" onclick="login('loginForm','userLogin')">登录</button>
 										</div>
 									</form>
 								</div>
@@ -359,6 +359,30 @@
 		<script src="assets/js/vendor.js"></script>
 		<!-- Active Js -->
 		<script src="assets/js/active.js"></script>
+		<script src="assets/js/data.tools.js"></script>
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.cookie.js"></script>
+		<script src="assets/js/data.tools.js"></script>
+		<script src="assets/js/data.dispose.js"></script>
+		<script>
+			function login(formName,url){
+				MySubmit(formName,url,function(data){
+					if(data!=null){
+						if(data.msg=="ok"){
+							// alert(JSON.stringify(data));
+							$.cookie("userjson", JSON.stringify(data), { path : "/" });
+							window.location.href ="index.html";
+						}
+						else{
+							alert("账号或密码错误！");
+						}
+					}
+					else{
+						alert("空的");
+					}
+				})
+			}
+		</script>
 	</body>
 
 </html>
