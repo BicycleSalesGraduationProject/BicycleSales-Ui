@@ -1,9 +1,16 @@
+/**
+ * 获取存到cookie中的用户登录信息。
+ */
 var cookie = $.cookie("userjson");
 if(cookie!=null){
 	var mydata = $.parseJSON(cookie);
 	$("#username").append(mydata.user.name+"");
 }
 
+/**
+ * 通过自行车类别id查询自行车信息
+ * @param {Object} bicycletypeid
+ */
 function getbicycleByTypeid(bicycletypeid){
 	var json={};
 	json['pageIndex'] = '';
@@ -25,14 +32,15 @@ function getbicycleByTypeid(bicycletypeid){
 	})
 }
 
+/**
+ * 通过cookie中的信息，渲染页面
+ */
 function getallbicycle(){
 	var cookie = $.cookie("allbicycle");
 	if(cookie!=null){
 		var mydata = $.parseJSON(cookie);
 		$("#username").append(mydata.user.name+"");
 	}
-	
-	
 }
 
 function getManager() {
