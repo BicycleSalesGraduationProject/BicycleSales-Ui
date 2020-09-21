@@ -76,16 +76,16 @@
 
 													<ul class="dropdown">
 														<li>
-															<a href="shop.html" onclick="getbicycleByTypeid(1)">山地自行车</a>
+															<a href="javascript:void(0);" onclick="getbicycleByTypeid(1)">山地自行车</a>
 														</li>
 														<li>
-															<a href="#">公路自行车</a>
+															<a href="javascript:void(0);" onclick="getbicycleByTypeid(2)">公路自行车</a>
 														</li>
 														<li>
-															<a href="#">旅行车</a>
+															<a href="javascript:void(0);" onclick="getbicycleByTypeid(3)">旅行车</a>
 														</li>
 														<li>
-															<a href="#">城市车</a>
+															<a href="javascript:void(0);" onclick="getbicycleByTypeid(4)">城市车</a>
 														</li>
 													</ul>
 												</li>
@@ -93,10 +93,10 @@
 													<a href="shop.html">装备<i class="fa fa-angle-down"></i></a>
 													<ul class="dropdown">
 														<li>
-															<a href="#">人身装备</a>
+															<a href="javascript:void(0);">人身装备</a>
 														</li>
 														<li>
-															<a href="#">车身装备</a>
+															<a href="javascript:void(0);">车身装备</a>
 														</li>
 													</ul>
 												</li>
@@ -157,16 +157,16 @@
 
 											<!--收藏数-->
 											<li>
-												<a href="wishlist.html">
+												<a href="javascript:void(0);" onclick="queryCollectByUserId()">
 													<i class="lnr lnr-heart"></i>
-													<div class="notification">0</div>
+													<div id="collectnum"></div>
 												</a>
 											</li>
 											<!--购物车数量-->
 											<li>
-												<a href="#" class="minicart-btn">
+												<a href="javascript:void(0);" class="minicart-btn" onclick="queryShopCarByUserId()">
 													<i class="lnr lnr-cart"></i>
-													<div class="notification">2</div>
+													<div id="shopcarnum"></div>
 												</a>
 											</li>
 										</ul>
@@ -275,7 +275,7 @@
 						<div class="col-md-4">
 							<div class="banner-item mb-30">
 								<figure class="banner-thumb">
-									<a href="#">
+									<a href="javascript:void(0);" onclick="getbicycleByTypeid(2)">
 										<img src="assets/img/banner/20200330101850_116.png" alt="">
 									</a>
 									<figcaption class="banner-content text-center">
@@ -290,7 +290,7 @@
 						<div class="col-md-4">
 							<div class="banner-item mb-30">
 								<figure class="banner-thumb">
-									<a href="#">
+									<a href="javascript:void(0);" onclick="getbicycleByTypeid(3)">
 										<img src="assets/img/banner/20200330101908_814.png" alt="">
 									</a>
 									<figcaption class="banner-content">
@@ -305,7 +305,7 @@
 						<div class="col-md-4">
 							<div class="banner-item mb-30">
 								<figure class="banner-thumb">
-									<a href="#">
+									<a href="javascript:void(0);" onclick="getbicycleByTypeid(4)">
 										<img src="assets/img/banner/20200330101922_936.png" alt="">
 									</a>
 									<figcaption class="banner-content">
@@ -320,7 +320,7 @@
 						<div class="col-md-4">
 							<div class="banner-item mb-30">
 								<figure class="banner-thumb">
-									<a href="#">
+									<a href="javascript:void(0);">
 										<img src="assets/img/banner/20180424114220_270.jpg" alt="">
 									</a>
 									<figcaption class="banner-content">
@@ -335,7 +335,7 @@
 						<div class="col-md-4">
 							<div class="banner-item mb-30">
 								<figure class="banner-thumb">
-									<a href="#">
+									<a href="javascript:void(0);">
 										<img src="assets/img/banner/20171127183415_875.jpg" alt="">
 									</a>
 									<figcaption class="banner-content">
@@ -360,46 +360,10 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mtn-40">
+					<div class="row mtn-40" id="newBicycle">
 						<!-- product single item start -->
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="product-item mt-40">
-								<figure class="product-thumb">
-									<a href="product-details.html">
-										<img class="pri-img" src="assets/img/product/20200330155227_603.png" alt="product">
-										<img class="sec-img" src="assets/img/product/20200330160514_609.png" alt="product">
-									</a>
-									<div class="product-badge">
-										<div class="product-label new">
-											<span>新</span>
-										</div>
-										<div class="product-label discount">
-											<span>10%</span>
-										</div>
-									</div>
-									<div class="button-group">
-										<a href="wishlist.html" data-toggle="tooltip" data-placement="left" title="加入收藏"><i class="lnr lnr-heart"></i></a>
-										<a href="cart.html" data-toggle="tooltip" data-placement="left" title="加入购物车"><i class="lnr lnr-cart"></i></a>
-									</div>
-								</figure>
-								<div class="product-caption">
-									<p class="product-name">
-										<a href="product-details.html">征服者 S2300 PRO</a>
-									</p>
-									<div class="price-box">
-										<span class="price-regular">$3698.00</span>
-										<span class="price-old"><del>$6698.00</del></span>
-									</div>
-								</div>
-							</div>
-						</div>
+						
 						<!-- product single item end -->
-
-						<div class="col-12">
-							<div class="view-more-btn">
-								<a class="btn-hero btn-load-more" href="shop.html">更多</a>
-							</div>
-						</div>
 					</div>
 				</div>
 			</section>
@@ -457,68 +421,10 @@
 					</div>
 					<div class="row">
 						<div class="col-lg-12">
-							<div class="product-carousel--4 slick-row-15 slick-sm-row-10 slick-arrow-style">
+							<div class="product-carousel--4 slick-row-15 slick-sm-row-10 slick-arrow-style" id="hotBicycle">
 								<!-- product single item start -->
-								<div class="product-item">
-									<figure class="product-thumb">
-										<a href="product-details.html">
-											<img class="pri-img" src="assets/img/product/20200408094243_767.png" alt="product">
-											<img class="sec-img" src="assets/img/product/20200408101529_761.png" alt="product">
-										</a>
-										<div class="product-badge">
-											<div class="product-label new">
-												<span>新</span>
-											</div>
-										</div>
-										<div class="button-group">
-											<a href="wishlist.html" data-toggle="tooltip" data-placement="left" title="加入收藏"><i class="lnr lnr-heart"></i></a>
-											<a href="cart.html" data-toggle="tooltip" data-placement="left" title="加入购物车"><i class="lnr lnr-cart"></i></a>
-										</div>
-									</figure>
-									<div class="product-caption">
-										<p class="product-name">
-											<a href="product-details.html">Revolt Advanced</a>
-										</p>
-										<div class="price-box">
-											<span class="price-regular">$22800.00</span>
-											<span class="price-old"><del>$28800.00</del></span>
-										</div>
-									</div>
-								</div>
+								
 								<!-- product single item end -->
-
-								<!-- product single item start -->
-								<div class="product-item">
-									<figure class="product-thumb">
-										<a href="product-details.html">
-											<img class="pri-img" src="assets/img/product/20200408092002_366.png" alt="product">
-											<img class="sec-img" src="assets/img/product/20200330163115_583.png" alt="product">
-										</a>
-										<div class="product-badge">
-											<div class="product-label new">
-												<span>新</span>
-											</div>
-											<div class="product-label discount">
-												<span>15%</span>
-											</div>
-										</div>
-										<div class="button-group">
-											<a href="wishlist.html" data-toggle="tooltip" data-placement="left" title="加入收藏"><i class="lnr lnr-heart"></i></a>
-											<a href="cart.html" data-toggle="tooltip" data-placement="left" title="加入购物车"><i class="lnr lnr-cart"></i></a>
-										</div>
-									</figure>
-									<div class="product-caption">
-										<p class="product-name">
-											<a href="product-details.html">OCR CLASSIC</a>
-										</p>
-										<div class="price-box">
-											<span class="price-regular">$4198.00</span>
-											<span class="price-old"><del>$5555.00</del></span>
-										</div>
-									</div>
-								</div>
-								<!-- product single item end -->
-
 							</div>
 						</div>
 					</div>
@@ -573,25 +479,8 @@
 					</div>
 					<div class="minicart-content-box">
 						<div class="minicart-item-wrapper">
-							<ul>
-
-								<li class="minicart-item">
-									<div class="minicart-thumb">
-										<a href="product-details.html">
-											<img src="assets/img/cart/20200408101529_761.png" alt="product">
-										</a>
-									</div>
-									<div class="minicart-content">
-										<h3 class="product-name">
-                                        <a href="product-details.html">TCR Advanced 3</a>
-                                    </h3>
-										<p>
-											<span class="cart-quantity">1 <strong>&times;</strong></span>
-											<span class="cart-price">$8998.00</span>
-										</p>
-									</div>
-									<button class="minicart-remove"><i class="lnr lnr-cross"></i></button>
-								</li>
+							<ul id="shopcarindex">
+								
 							</ul>
 						</div>
 
@@ -599,12 +488,12 @@
 							<ul>
 								<li>
 									<span>件数</span>
-									<span><strong>1</strong></span>
+									<span><strong id="totalnum">1</strong></span>
 								</li>
 
 								<li class="total">
 									<span>总计</span>
-									<span><strong>$8998.00</strong></span>
+									<span><strong id="totalmoney">$8998.00</strong></span>
 								</li>
 							</ul>
 						</div>
@@ -625,16 +514,22 @@
 		</div>
 		<!-- Scroll to Top End -->
 
+		
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.cookie.js"></script>
+		<script src="assets/js/data.tools.js"></script>
+		<script src="assets/js/data.dispose.js"></script>
+		<script>
+			getNewBicycle();
+			getHotBicycle();
+			getShopCarNum();
+			getCollectNum();
+		</script>
 		<!-- All vendor & plugins & active js include here -->
 		<!--All Vendor Js -->
 		<script src="assets/js/vendor.js"></script>
 		<!-- Active Js -->
 		<script src="assets/js/active.js"></script>
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.cookie.js"></script>
-		<script src="assets/js/data.tools.js"></script>
-		<script src="assets/js/data.dispose.js"></script>
-		
 		<script>
 			
 		</script>

@@ -18,6 +18,7 @@
 		<link href="assets/css/vendor.css" rel="stylesheet">
 		<!-- Main Style CSS -->
 		<link href="assets/css/style.css" rel="stylesheet">
+		<link href="assets/css/my.min.css" rel="stylesheet"/>
 
 		<!--[if lt IE 9]>
 <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -225,89 +226,8 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<!-- Wishlist Table Area -->
-								<div class="cart-table table-responsive">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th class="pro-thumbnail">图片</th>
-												<th class="pro-title">名称</th>
-												<th class="pro-price">价钱</th>
-												<th class="pro-quantity">库存</th>
-												<th class="pro-subtotal">加入购物车</th>
-												<th class="pro-remove">移除</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td class="pro-thumbnail">
-													<a href="#"><img class="img-fluid" src="assets/img/product/20200330160514_609.png" alt="Product" /></a>
-												</td>
-												<td class="pro-title">
-													<a href="#">Domane AL3</a>
-												</td>
-												<td class="pro-price"><span>$2995.00</span></td>
-												<td class="pro-quantity"><span class="text-success">50</span></td>
-												<td class="pro-subtotal">
-													<a href="cart.html" class="btn btn__bg">加入购物车
-													</a>
-												</td>
-												<td class="pro-remove">
-													<a href="#"><i class="fa fa-trash-o"></i></a>
-												</td>
-											</tr>
-											<tr>
-												<td class="pro-thumbnail">
-													<a href="#"><img class="img-fluid" src="assets/img/product/20200330161112_165.png" alt="Product" /></a>
-												</td>
-												<td class="pro-title">
-													<a href="#">Domane AL3</a>
-												</td>
-												<td class="pro-price"><span>$2995.00</span></td>
-												<td class="pro-quantity"><span class="text-success">50</span></td>
-												<td class="pro-subtotal">
-													<a href="cart.html" class="btn btn__bg">加入购物车
-													</a>
-												</td>
-												<td class="pro-remove">
-													<a href="#"><i class="fa fa-trash-o"></i></a>
-												</td>
-											</tr>
-											<tr>
-												<td class="pro-thumbnail">
-													<a href="#"><img class="img-fluid" src="assets/img/product/20200408092002_366.png" alt="Product" /></a>
-												</td>
-												<td class="pro-title">
-													<a href="#">Domane AL3</a>
-												</td>
-												<td class="pro-price"><span>$2995.00</span></td>
-												<td class="pro-quantity"><span class="text-success">50</span></td>
-												<td class="pro-subtotal">
-													<a href="cart.html" class="btn btn__bg">加入购物车
-													</a>
-												</td>
-												<td class="pro-remove">
-													<a href="#"><i class="fa fa-trash-o"></i></a>
-												</td>
-											</tr>
-											<tr>
-												<td class="pro-thumbnail">
-													<a href="#"><img class="img-fluid" src="assets/img/product/20200408094243_767.png" alt="Product" /></a>
-												</td>
-												<td class="pro-title">
-													<a href="#">Domane AL3</a>
-												</td>
-												<td class="pro-price"><span>$2995.00</span></td>
-												<td class="pro-quantity"><span class="text-success">50</span></td>
-												<td class="pro-subtotal">
-													<a href="cart.html" class="btn btn__bg">加入购物车
-													</a>
-												</td>
-												<td class="pro-remove">
-													<a href="#"><i class="fa fa-trash-o"></i></a>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+								<div class="cart-table table-responsive" id="usercollect">
+									
 								</div>
 							</div>
 						</div>
@@ -319,33 +239,7 @@
 		</main>
 		<!-- main wrapper end -->
 
-		<!-- Start Footer Area Wrapper -->
-		<footer class="footer-wrapper">
-
-			<!-- footer bottom area start -->
-			<div class="footer-bottom-area">
-				<div class="container">
-					<div class="row align-items-center">
-						<div class="col-md-6 order-2 order-md-1">
-							<div class="copyright-text">
-								<p>Copyright ©All Right Reserved.</p>
-							</div>
-						</div>
-						<div class="col-md-6 order-1 order-md-2">
-							<div class="footer-social-link">
-								<a href="#"><i class="fa fa-twitter"></i></a>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-								<a href="#"><i class="fa fa-linkedin"></i></a>
-								<a href="#"><i class="fa fa-instagram"></i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- footer bottom area end -->
-
-		</footer>
-		<!-- End Footer Area Wrapper -->
+		
 
 		<!-- offcanvas mini cart start -->
 		<div class="offcanvas-minicart-wrapper">
@@ -407,13 +301,47 @@
 		<div class="scroll-top not-visible">
 			<i class="fa fa-angle-up"></i>
 		</div>
-		<!-- Scroll to Top End -->
-
+		<!-- Start Footer Area Wrapper -->
+		<footer class="footer-wrapper footer">
+		
+			<!-- footer bottom area start -->
+			<div class="footer-bottom-area">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-md-6 order-2 order-md-1">
+							<div class="copyright-text">
+								<p>Copyright ©All Right Reserved.</p>
+							</div>
+						</div>
+						<div class="col-md-6 order-1 order-md-2">
+							<div class="footer-social-link">
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+								<a href="#"><i class="fa fa-instagram"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- footer bottom area end -->
+		
+		</footer>
 		<!-- All vendor & plugins & active js include here -->
 		<!--All Vendor Js -->
 		<script src="assets/js/vendor.js"></script>
 		<!-- Active Js -->
 		<script src="assets/js/active.js"></script>
+		<!-- End Footer Area Wrapper -->
+		<!-- Scroll to Top End -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.cookie.js"></script>
+		<script src="assets/js/data.tools.js"></script>
+		<script src="assets/js/data.dispose.js"></script>
+		<script>
+			getCollect();
+		</script>
+		
 	</body>
 
 </html>

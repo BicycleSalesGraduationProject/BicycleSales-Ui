@@ -1,4 +1,5 @@
-(function ($) {
+// (function ($) {
+$(function(){
 	"use strict";
 
 	/*------ Sticky menu start ------*/
@@ -304,7 +305,6 @@
 	}
 	dropdownAnimation();
 	
-
 	// User Changeable Access
 	var activeId = $("#instafeed"),
 		myTemplate = '<div class="instagram-item"><a href="{{link}}" target="_blank" id="{{id}}"><img src="{{image}}" /></a><div class="instagram-hvr-content"><span class="tottallikes"><i class="fa fa-heart"></i>{{likes}}</span><span class="totalcomments"><i class="fa fa-comments"></i>{{comments}}</span></div></div>';
@@ -325,7 +325,6 @@
 			});
 		userFeed.run();
 	}
-
 	// Instagram feed carousel active
 	$(window).on('load', function () {
 		var instagramFeed = $(".instagram-carousel");
@@ -359,4 +358,5 @@
 	})
 
 
-}(jQuery));
+// }(jQuery));
+});

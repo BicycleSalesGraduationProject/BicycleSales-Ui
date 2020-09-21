@@ -18,6 +18,9 @@
 		<link href="assets/css/vendor.css" rel="stylesheet">
 		<!-- Main Style CSS -->
 		<link href="assets/css/style.css" rel="stylesheet">
+		<link href="assets/css/my.min.css" rel="stylesheet"/>
+		<link href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" rel="stylesheet">
+		
 
 		<!--[if lt IE 9]>
 <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -234,15 +237,16 @@
 												</a>
 												<a href="#orders" data-toggle="tab"><i class="fa fa-first-order"></i> 订单
 												</a>
-												<a href="#download" data-toggle="tab"><i class="fa fa-heart-o"></i> 收藏
+												<a href="#download"onclick="getCollectMyAccount()" data-toggle="tab"><i class="fa fa-heart-o"></i> 收藏
 												</a>
-												<a href="#payment-method" data-toggle="tab"><i class="fa fa-cart-plus"></i> 购物车
+												<a href="#payment-method" onclick="getShopCarMyAccount()" data-toggle="tab"><i class="fa fa-cart-plus"></i> 购物车
 												</a>
-												<a href="#address-edit" data-toggle="tab"><i class="fa fa-map-marker"></i> 地址
+												<a href="#address-edit" data-toggle="tab" onclick="initializeAddress()"><i class="fa fa-map-marker"></i> 地址
 												</a>
-												<a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> 账户修改
+												<a href="#account-info" data-toggle="tab" onclick="getUpdateMessage()"><i class="fa fa-user"></i> 账户修改
+												 
 												</a>
-												<a href="login-register.html"><i class="fa fa-sign-out"></i>退出</a>
+												<a href="javascript:void(0)" onclick="quitAccpount()"><i class="fa fa-sign-out"></i>退出</a>
 											</div>
 										</div>
 										<!-- My Account Tab Menu End -->
@@ -300,29 +304,8 @@
 												<div class="tab-pane fade" id="download" role="tabpanel">
 													<div class="myaccount-content">
 														<h3>收藏</h3>
-														<div class="myaccount-table table-responsive text-center">
-															<table class="table table-bordered">
-																<thead class="thead-light">
-																	<tr>
-																		<th>编号</th>
-																		<th>图片</th>
-																		<th>名称</th>
-																		<th>金额</th>
-																		<th>查看详情</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<tr>
-																		<td>1</td>
-																		<td><img src="assets/img/product/20200330161112_165.png" /></td>
-																		<td>XTC 27.5 SE</td>
-																		<td>$7000</td>
-																		<td>
-																			<a href="#" class="btn btn__bg">详情</a>
-																	</tr>
-
-																</tbody>
-															</table>
+														<div class="myaccount-table table-responsive text-center" id="myaccountcollect">
+															
 														</div>
 													</div>
 												</div>
@@ -332,29 +315,8 @@
 												<div class="tab-pane fade" id="payment-method" role="tabpanel">
 													<div class="myaccount-content">
 														<h3>购物车</h3>
-														<div class="myaccount-table table-responsive text-center">
-															<table class="table table-bordered">
-																<thead class="thead-light">
-																	<tr>
-																		<th>编号</th>
-																		<th>图片</th>
-																		<th>名称</th>
-																		<th>金额</th>
-																		<th>查看详情</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<tr>
-																		<td>1</td>
-																		<td><img src="assets/img/product/20200408101529_761.png" /></td>
-																		<td>REIGN</td>
-																		<td>$5000</td>
-																		<td>
-																			<a href="#" class="btn btn__bg">详情</a>
-																	</tr>
-
-																</tbody>
-															</table>
+														<div class="myaccount-table table-responsive text-center" id="myaccountshopcar">
+															
 														</div>
 													</div>
 												</div>
@@ -364,51 +326,23 @@
 												<div class="tab-pane fade" id="address-edit" role="tabpanel">
 													<div class="myaccount-content">
 														<h3>地址</h3>
-														<div class="myaccount-table table-responsive text-center">
-															<table class="table table-bordered">
-																<thead class="thead-light">
-																	<tr>
-																		<th>编号</th>
-																		<th>姓名</th>
-																		<th>地址</th>
-																		<th>电话</th>
-																		<th>操作</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<tr>
-																		<td>1</td>
-																		<td><strong>Erik Jhonson</strong></td>
-																		<td>1355 Market St, Suite 900 <br> San Francisco, CA 94103</td>
-																		<td>Mobile: (123) 456-7890</td>
-																		<td><i class="fa fa-trash-o"></i> <i class="fa fa-file-word-o"></i></td>
-																	</tr>
-																</tbody>
-															</table>
+														<div class="myaccount-table table-responsive text-center" id="myaccountaddress">
+															
 														</div>
 														<form action="#">
 															<fieldset>
 																<legend>添加地址</legend>
 																<div class="single-input-item">
-																	<label for="confirm-pwd" class="required">姓名</label>
-																	<input type="password" id="confirm-pwd" placeholder="请输入姓名" />
-																	<label for="confirm-pwd" class="required">地址</label>
-																	<select id="country">
-																		<option>=请选择省份=</option>
-																	</select>
-																	<select id="city">
-																		<option>=请选择城市=</option>
-																	</select>
-																	<select id="country">
-																		<option>=请选择县区=</option>
-																		<input type="text" id="new-pwd" placeholder="请输入详细地址" />
-																		<label for="confirm-pwd" class="required">电话</label>
-																		<input type="password" id="confirm-pwd" placeholder="请输入电话号" />
-																		</td>
-																		</tr>
+																	<label for="confirm-name" class="required">姓名</label>
+																	<input type="text" id="confirm-name" placeholder="请输入姓名" required="required" />
+																	<label for="procitdis" class="required">地址</label>
+																	<div id="myaddress"></div>
+																	<input type="text" id="new-address" placeholder="请输入详细地址" required="required" />
+																	<label for="confirm-tel" class="required">电话</label>
+																	<input type="text" id="confirm-tel" placeholder="请输入电话号" required="required" />
 															</fieldset>
 															<div class="single-input-item">
-																<button class="btn btn__bg">保存</button>
+																<button class="btn btn__bg" onclick="insertAddress()">保存</button>
 															</div>
 														</form>
 													</div>												
@@ -420,28 +354,37 @@
 													<div class="myaccount-content">
 														<h3>账户详情</h3>
 														<div class="account-details-form">
-															<form action="#">
+															<form onsubmit="return false">
+																<div class="single-input-item">
+																	<label for="display-name" class="required">用户名</label>
+																	<input type="text" id="display-name" placeholder="请输入用户名" required="required"/>
+																</div>
+																<div class="single-input-item">
+																	<label for="display-numid" class="required">身份证号</label>
+																	<input type="text" id="display-numid" placeholder="请输入身份证号" readonly="readonly"/>
+																</div>
+																
 																<div class="row">
 																	<div class="col-lg-6">
 																		<div class="single-input-item">
-																			<label for="first-name" class="required">姓氏</label>
-																			<input type="text" id="first-name" placeholder="请输入姓氏" />
+																			<label for="email" class="required">邮箱</label>
+																			<input type="text" id="email" placeholder="请输入邮箱" required="required"/>
 																		</div>
 																	</div>
 																	<div class="col-lg-6">
 																		<div class="single-input-item">
-																			<label for="last-name" class="required">名字</label>
-																			<input type="text" id="last-name" placeholder="请输入名字" />
+																			<label for="last-btn" class="required visibility">名字</label>
+																			<!-- <input type="text" id="last-name" placeholder="请输入名字" /> -->
+																			<input class="captchaBtn" type="button" id="last-btn" value="获取验证码"/>
 																		</div>
 																	</div>
 																</div>
 																<div class="single-input-item">
-																	<label for="display-name" class="required">用户名</label>
-																	<input type="text" id="display-name" placeholder="请输入用户名" />
+																	<label for="display-code" class="required">验证码</label>
+																	<input type="text" id="display-code" placeholder="请输入验证码"/>
 																</div>
 																<div class="single-input-item">
-																	<label for="email" class="required">邮箱</label>
-																	<input type="email" id="email" placeholder="请输入邮箱" />
+																	<button class="btn btn__bg" onclick="updateUserMessage()">保存</button>
 																</div>
 																<fieldset>
 																	<legend>修改密码</legend>
@@ -465,7 +408,7 @@
 																	</div>
 																</fieldset>
 																<div class="single-input-item">
-																	<button class="btn btn__bg">保存</button>
+																	<button class="btn btn__bg" onclick="updatePassword()">保存</button>
 																</div>
 															</form>
 
@@ -489,7 +432,7 @@
 		<!-- main wrapper end -->
 
 		<!-- Start Footer Area Wrapper -->
-		<footer class="footer-wrapper">
+		<footer class="footer-wrapper footer">
 
 			<!-- footer bottom area start -->
 			<div class="footer-bottom-area" style="margin-top: 50px;">
@@ -577,12 +520,22 @@
 			<i class="fa fa-angle-up"></i>
 		</div>
 		<!-- Scroll to Top End -->
-
+		<script src="assets/js/jquery.min.js"></script>
+		<!-- 数据处理渲染 -->
+		<script src="assets/js/jquery.cookie.js"></script>
+		<script src="assets/js/data.tools.js"></script>
+		<script src="assets/js/data.dispose.js"></script>
 		<!-- All vendor & plugins & active js include here -->
 		<!--All Vendor Js -->
 		<script src="assets/js/vendor.js"></script>
 		<!-- Active Js -->
 		<script src="assets/js/active.js"></script>
+		<script>
+			queryShopCarByUserId();
+			queryCollectByUserIdMyAccount();
+		</script>
+		<script src="assets/js/countdown.js"></script>
+		<script src="assets/js/jquery.md5.js"></script>
 	</body>
 
 </html>
