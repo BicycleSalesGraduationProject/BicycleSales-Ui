@@ -39,19 +39,19 @@
 						<div class="row align-items-center">
 							<div class="col-lg-6">
 								<div class="welcome-message">
-									<p>欢迎来到XXXX</p>
+									<p>欢迎你：<span id="username"></span></p>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- header top end -->
-
+		
 				<!-- header middle area start -->
 				<div class="header-main-area sticky">
 					<div class="container">
 						<div class="row align-items-center position-relative">
-
+		
 							<!-- start logo area -->
 							<div class="col-lg-3">
 								<div class="logo">
@@ -61,7 +61,7 @@
 								</div>
 							</div>
 							<!-- start logo area -->
-
+		
 							<!-- main menu area start -->
 							<div class="col-lg-6 position-static">
 								<div class="main-menu-area">
@@ -74,19 +74,19 @@
 												</li>
 												<li>
 													<a href="#">自行车<i class="fa fa-angle-down"></i></a>
-
+		
 													<ul class="dropdown">
 														<li>
-															<a href="#">山地自行车</a>
+															<a href="javascript:void(0);" onclick="getbicycleByTypeid(1)">山地自行车</a>
 														</li>
 														<li>
-															<a href="#">公路自行车</a>
+															<a href="javascript:void(0);" onclick="getbicycleByTypeid(2)">公路自行车</a>
 														</li>
 														<li>
-															<a href="#">旅行车</a>
+															<a href="javascript:void(0);" onclick="getbicycleByTypeid(3)">旅行车</a>
 														</li>
 														<li>
-															<a href="#">城市车</a>
+															<a href="javascript:void(0);" onclick="getbicycleByTypeid(4)">城市车</a>
 														</li>
 													</ul>
 												</li>
@@ -94,10 +94,10 @@
 													<a href="shop.html">装备<i class="fa fa-angle-down"></i></a>
 													<ul class="dropdown">
 														<li>
-															<a href="#">人身装备</a>
+															<a href="javascript:void(0);">人身装备</a>
 														</li>
 														<li>
-															<a href="#">车身装备</a>
+															<a href="javascript:void(0);">车身装备</a>
 														</li>
 													</ul>
 												</li>
@@ -108,10 +108,10 @@
 															<a href="blog-left-sidebar.html">国内赛事</a>
 														</li>
 														<li>
-															<a href="blog-right-sidebar.html">国际赛事</a>
+															<a href="#">国际赛事</a>
 														</li>
 														<li>
-															<a href="blog-grid-full-width.html">官方活动</a>
+															<a href="#">官方活动</a>
 														</li>
 													</ul>
 												</li>
@@ -125,20 +125,20 @@
 								</div>
 							</div>
 							<!-- main menu area end -->
-
+		
 							<!-- mini cart area start -->
 							<div class="col-lg-3">
 								<div class="header-configure-wrapper">
 									<div class="header-configure-area">
 										<ul class="nav justify-content-end">
-
+		
 											<!--邮箱-->
 											<!--<li>
 												<a href="#" class="offcanvas-btn">
 													<i class="lnr lnr-magnifier"></i>
 												</a>
 											</li>-->
-
+		
 											<li class="user-hover">
 												<a href="#">
 													<i class="lnr lnr-user"></i>
@@ -155,19 +155,19 @@
 													</li>
 												</ul>
 											</li>
-
+		
 											<!--收藏数-->
 											<li>
-												<a href="wishlist.html">
+												<a href="javascript:void(0);" onclick="queryCollectByUserId()">
 													<i class="lnr lnr-heart"></i>
-													<div class="notification">0</div>
+													<div id="collectnum"></div>
 												</a>
 											</li>
 											<!--购物车数量-->
 											<li>
-												<a href="#" class="minicart-btn">
+												<a href="javascript:void(0);" class="minicart-btn" onclick="queryShopCarByUserId()">
 													<i class="lnr lnr-cart"></i>
-													<div class="notification">2</div>
+													<div id="shopcarnum"></div>
 												</a>
 											</li>
 										</ul>
@@ -175,14 +175,14 @@
 								</div>
 							</div>
 							<!-- mini cart area end -->
-
+		
 						</div>
 					</div>
 				</div>
 				<!-- header middle area end -->
 			</div>
 			<!-- main header start -->
-
+		
 			<!-- mobile header start -->
 			<div class="mobile-header d-lg-none d-md-block sticky">
 				<!--mobile header top start -->
@@ -230,7 +230,7 @@
 								<h2 >订单</h2>
 								<div class="order-summary-content">
 									<!-- Order Summary Table -->
-									<div class="order-summary-table table-responsive text-center">
+									<div class="order-summary-table table-responsive text-center" id="orderCheckOut">
 										<table class="table table-bordered">
 											<thead>
 												<tr>
@@ -255,6 +255,7 @@
 											</tfoot>
 										</table>
 									</div>
+									<form onsubmit="return false;">
 									<!-- Order Payment Method -->
 									<div class="order-payment-method">
 										<div class="single-payment-method show">
@@ -268,7 +269,6 @@
 												<p>货到付款.</p>
 											</div>
 										</div>
-										
 										<div class="single-payment-method">
 											<div class="payment-method-name">
 												<div class="custom-control custom-radio">
@@ -296,9 +296,10 @@
 												<input type="checkbox" class="custom-control-input" id="terms" required />
 												<label class="custom-control-label" for="terms">我已阅读并同意本网站的条款和条件。</label>
 											</div>
-											<button type="submit" class="btn btn__bg">确认订单</button>
+											<button type="submit" class="btn btn__bg">确认支付</button>
 										</div>
 									</div>
+									</form>
 								</div>
 							</div>
 						</div>
@@ -348,42 +349,25 @@
 					</div>
 					<div class="minicart-content-box">
 						<div class="minicart-item-wrapper">
-							<ul>
-
-								<li class="minicart-item">
-									<div class="minicart-thumb">
-										<a href="product-details.html">
-											<img src="assets/img/cart/20200408101529_761.png" alt="product">
-										</a>
-									</div>
-									<div class="minicart-content">
-										<h3 class="product-name">
-                                        <a href="product-details.html">TCR Advanced 3</a>
-                                    </h3>
-										<p>
-											<span class="cart-quantity">1 <strong>&times;</strong></span>
-											<span class="cart-price">$8998.00</span>
-										</p>
-									</div>
-									<button class="minicart-remove"><i class="lnr lnr-cross"></i></button>
-								</li>
+							<ul id="shopcarindex">
+								
 							</ul>
 						</div>
-
+						
 						<div class="minicart-pricing-box">
 							<ul>
 								<li>
 									<span>件数</span>
-									<span><strong>1</strong></span>
+									<span><strong id="totalnum">0</strong></span>
 								</li>
-
+						
 								<li class="total">
 									<span>总计</span>
-									<span><strong>$8998.00</strong></span>
+									<span><strong id="totalmoney">$0.00</strong></span>
 								</li>
 							</ul>
 						</div>
-
+						
 						<div class="minicart-button">
 							<a href="cart.html"><i class="fa fa-shopping-cart"></i>购物车</a>
 							<a href="cart.html"><i class="fa fa-share"></i>结算</a>
@@ -399,7 +383,17 @@
 			<i class="fa fa-angle-up"></i>
 		</div>
 		<!-- Scroll to Top End -->
-
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.cookie.js"></script>
+		<script src="assets/js/data.tools.js"></script>
+		<script src="assets/js/data.dispose.js"></script>
+		<script>
+			getNewBicycle();
+			getHotBicycle();
+			getShopCarNum();
+			getCollectNum();
+			queryOrderDetailByOrderNo();
+		</script>
 		<!-- All vendor & plugins & active js include here -->
 		<!--All Vendor Js -->
 		<script src="assets/js/vendor.js"></script>

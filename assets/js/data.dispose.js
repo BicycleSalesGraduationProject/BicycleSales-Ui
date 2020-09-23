@@ -2,7 +2,7 @@
  * 获取存到cookie中的用户登录信息。
  */
 var cookie = $.cookie("userjson");
-if (cookie != null&&cookie!='') {
+if (cookie != null && cookie != '') {
 	var mydata = $.parseJSON(cookie);
 	window.sessionStorage.setItem("userjson", cookie);
 	$("#username").html(mydata.user.name + "");
@@ -38,7 +38,7 @@ function getbicycleByTypeid(bicycletypeid) {
  */
 function getallbicycle() {
 	var my = window.sessionStorage.getItem("allbicycle");
-	if (my != null&&my!='') {
+	if (my != null && my != '') {
 		var mydata = $.parseJSON(my);
 		if (mydata.msg == "ok") {
 			var str = "";
@@ -46,46 +46,56 @@ function getallbicycle() {
 			var array = mydata.allbicycle;
 
 			$.each(array, function(index, element) {
+				var oldmoney = element['money'] * 1.2;
 				var x = 100;
 				var y = 5;
 				var rand = parseInt(Math.random() * (x - y + 1) + y);
-				str += "<div class='col-md-4 col-sm-6' >"
-				str += "<div class='product-item'>" +
-					"<figure class='product-thumb'>" +
-					"<a href='javascript:void(0);' onclick='getbicycleById(" + element["bicycleid"] + ")'>" +
-					"<img class='pri-img' src='" + element['firstphoto'] + "' alt='product'>" +
-					"<img class='sec-img' src='" + element['secondphoto'] + "' alt='product'>" +
-					"</a>" +
-					"<div class='product-badge'>" +
-					"<div class='product-label new'>" +
-					"<span>new</span>" +
-					"</div>" +
-					"<div class='product-label discount'>" +
-					"<span>" + rand + "%</span>" +
-					"</div>" +
-					"</div>" +
-					"<div class='button-group'>" +
-					"<a href='javascript:void(0);' data-toggle='tooltip' data-placement='left' onclick='insertCollect(" + element[
-						"bicycleid"] + ")' title='收藏'><i class='lnr lnr-heart'></i></a>" +
-					"<a href='javascript:void(0);' data-toggle='modal' data-target='#quick_view' onclick='getbicycleByIdShop(" +
-					element["bicycleid"] + ")'><span data-toggle='tooltip' data-placement='left'" +
-					"title='查看详情'><i class='lnr lnr-magnifier'></i></span></a>" +
-					"<a href='javascript:void(0);' data-toggle='tooltip' data-placement='left' onclick='insertShopCar(" + element[
-						"bicycleid"] + "," + 1 + "," + element["money"] + ")' title='添加购物车'><i class='lnr lnr-cart'></i></a>" +
-					"</div>" +
-					"</figure>" +
-					"<div class='product-caption'>" +
-					"<p class='product-name'>" +
-					"<a href='javascript:void(0);' onclick='getbicycleById(" + element['bicycleid'] + ")'>" + element['name'] +
-					"</a>" +
-					"</p>" +
-					"<div class='price-box'>" +
-					"<span class='price-regular'>$" + element['money'] + "</span>" +
-					"<span class='price-old'><del>$" + element['money'] * 1.2 + "</del></span>" +
-					"</div>" +
-					"</div>" +
-					"</div>";
-				str += "</div>";
+				var secondphoto = "";
+				if(element['secondphoto']!=''){
+					secondphoto = element['secondphoto'];
+				}
+				else{
+					secondphoto = element['firstphoto'];
+				}
+				if(element["delstate"]>0){
+					str += "<div class='col-md-4 col-sm-6' >"
+					str += "<div class='product-item'>" +
+						"<figure class='product-thumb'>" +
+						"<a href='javascript:void(0);' onclick='getbicycleById(" + element["bicycleid"] + ")'>" +
+						"<img class='pri-img' src='" + element['firstphoto'] + "' alt='product'>" +
+						"<img class='sec-img' src='" + secondphoto + "' alt='product'>" +
+						"</a>" +
+						"<div class='product-badge'>" +
+						"<div class='product-label new'>" +
+						"<span>new</span>" +
+						"</div>" +
+						"<div class='product-label discount'>" +
+						"<span>" + rand + "%</span>" +
+						"</div>" +
+						"</div>" +
+						"<div class='button-group'>" +
+						"<a href='javascript:void(0);' data-toggle='tooltip' data-placement='left' onclick='insertCollect(" + element[
+							"bicycleid"] + ")' title='收藏'><i class='lnr lnr-heart'></i></a>" +
+						"<a href='javascript:void(0);' data-toggle='modal' data-target='#quick_view' onclick='getbicycleByIdShop(" +
+						element["bicycleid"] + ")'><span data-toggle='tooltip' data-placement='left'" +
+						"title='查看详情'><i class='lnr lnr-magnifier'></i></span></a>" +
+						"<a href='javascript:void(0);' data-toggle='tooltip' data-placement='left' onclick='insertShopCar(" + element[
+							"bicycleid"] + "," + 1 + "," + element["money"] + ")' title='添加购物车'><i class='lnr lnr-cart'></i></a>" +
+						"</div>" +
+						"</figure>" +
+						"<div class='product-caption'>" +
+						"<p class='product-name'>" +
+						"<a href='javascript:void(0);' onclick='getbicycleById(" + element['bicycleid'] + ")'>" + element['name'] +
+						"</a>" +
+						"</p>" +
+						"<div class='price-box'>" +
+						"<span class='price-regular'>$" + element['money'].toFixed(2) + "</span>" +
+						"<span class='price-old'><del>$" + oldmoney.toFixed(2) + "</del></span>" +
+						"</div>" +
+						"</div>" +
+						"</div>";
+					str += "</div>";
+				}
 			})
 
 			$("#myallbicycle").html(str);
@@ -158,8 +168,8 @@ function getbicycleByIdShop(bicycleId) {
 					})
 				}
 				$("#shop-bicyclename").html(data.bicycle.name);
-				$("#shop-money").html("$" + data.bicycle.money);
-				$("#shop-oldmoney").html("<del>$" + data.bicycle.money * 1.2 + "</del>");
+				$("#shop-money").html("$" + data.bicycle.money.toFixed(2));
+				$("#shop-oldmoney").html("<del>$" + (data.bicycle.money * 1.2).toFixed(2) + "</del>");
 				$("#shop-inventory").html(data.bicycle.inventory + " 库存");
 				$(".product-countdown").attr("data-countdown", "2020/11/25");
 				//x上限，y下限     
@@ -189,7 +199,7 @@ function getbicycleByIdShop(bicycleId) {
  */
 function getbicycle() {
 	var my = window.sessionStorage.getItem("bicycle");
-	if (my != null&&my!='') {
+	if (my != null && my != '') {
 		var mydata = $.parseJSON(my);
 		console.log(mydata);
 		if (mydata.msg == "ok") {
@@ -202,8 +212,8 @@ function getbicycle() {
 				})
 			}
 			$("#bicyclename").html(mydata.bicycle.name);
-			$("#money").html("$" + mydata.bicycle.money);
-			$("#oldmoney").html("<del>$" + mydata.bicycle.money * 1.2 + "</del>");
+			$("#money").html("$" + mydata.bicycle.money.toFixed(2));
+			$("#oldmoney").html("<del>$" + (mydata.bicycle.money * 1.2).toFixed(2) + "</del>");
 			$("#inventory").html(mydata.bicycle.inventory + " 库存");
 			//x上限，y下限
 			var x = 10000;
@@ -225,7 +235,7 @@ function getNewBicycle() {
 	var json = {};
 	json["pageIndex"] = "";
 	json['delstate'] = 102;
-	json['pageSize'] = 6;
+	json['pageSize'] = 8;
 	url = "queryDelstateBicycle";
 	MySubmitString(JSON.stringify(json), url, function(data) {
 		if (data != null && data.msg == "ok") {
@@ -235,41 +245,49 @@ function getNewBicycle() {
 				var x = 100;
 				var y = 5;
 				var rand = parseInt(Math.random() * (x - y + 1) + y);
-				str += "<div class='col-lg-3 col-md-4 col-sm-6'>" +
-					"<div class='product-item mt-40'>" +
-					"<figure class='product-thumb'>" +
-					"<a href='javascript:void(0);' onclick='getbicycleById(" + element['bicycleid'] + ")'>" +
-					"<img class='pri-img' src='" + element['firstphoto'] + "' alt='product'>" +
-					"<img class='sec-img' src='" + element['secondphoto'] + "' alt='product'>" +
-					"</a>" +
-					"<div class='product-badge'>" +
-					"<div class='product-label new'>" +
-					"<span>新</span>" +
-					"</div>" +
-					"<div class='product-label discount'>" +
-					"<span>" + rand + "%</span>" +
-					"</div>" +
-					"</div>" +
-					"<div class='button-group'>" +
-					"<a href='javascript:void(0);' data-toggle='tooltip' data-placement='left' onclick='insertCollect(" + element[
-						"bicycleid"] + ")' title='加入收藏'><i class='lnr lnr-heart'></i></a>" +
-					"<a href='javascript:void(0);' data-toggle='tooltip' data-placement='left' onclick='insertShopCar(" + element[
-						"bicycleid"] + "," + 1 + "," + element["money"] + ")' title='加入购物车'><i class='lnr lnr-cart'></i></a>" +
-					"</div>" +
-					"</figure>" +
-					"<div class='product-caption'>" +
-					"<p class='product-name'>" +
-					"<a href='javascript:void(0);' onclick='getbicycleById(" + element['bicycleid'] + ")'>" + element['name'] +
-					"</a>" +
-					"</p>" +
-					"<div class='price-box'>" +
-					"<span class='price-regular'>$" + element['money'] + "</span>" +
-					"<span class='price-old'><del>$" + element['money'] * 1.2 + "</del></span>" +
-					"</div>" +
-					"</div>" +
-					"</div>" +
-					"</div>";
-
+				var secondphoto = "";
+				if(element['secondphoto']!=''){
+					secondphoto = element['secondphoto'];
+				}
+				else{
+					secondphoto = element['firstphoto'];
+				}
+				if(element["delstate"]>0){
+					str += "<div class='col-lg-3 col-md-4 col-sm-6'>" +
+						"<div class='product-item mt-40'>" +
+						"<figure class='product-thumb'>" +
+						"<a href='javascript:void(0);' onclick='getbicycleById(" + element['bicycleid'] + ")'>" +
+						"<img class='pri-img' src='" + element['firstphoto'] + "' alt='product'>" +
+						"<img class='sec-img' src='" + secondphoto + "' alt='product'>" +
+						"</a>" +
+						"<div class='product-badge'>" +
+						"<div class='product-label new'>" +
+						"<span>新</span>" +
+						"</div>" +
+						"<div class='product-label discount'>" +
+						"<span>" + rand + "%</span>" +
+						"</div>" +
+						"</div>" +
+						"<div class='button-group'>" +
+						"<a href='javascript:void(0);' data-toggle='tooltip' data-placement='left' onclick='insertCollect(" + element[
+							"bicycleid"] + ")' title='加入收藏'><i class='lnr lnr-heart'></i></a>" +
+						"<a href='javascript:void(0);' data-toggle='tooltip' data-placement='left' onclick='insertShopCar(" + element[
+							"bicycleid"] + "," + 1 + "," + element["money"] + ")' title='加入购物车'><i class='lnr lnr-cart'></i></a>" +
+						"</div>" +
+						"</figure>" +
+						"<div class='product-caption'>" +
+						"<p class='product-name'>" +
+						"<a href='javascript:void(0);' onclick='getbicycleById(" + element['bicycleid'] + ")'>" + element['name'] +
+						"</a>" +
+						"</p>" +
+						"<div class='price-box'>" +
+						"<span class='price-regular'>$" + element['money'].toFixed(2) + "</span>" +
+						"<span class='price-old'><del>$" + (element['money'] * 1.2).toFixed(2) + "</del></span>" +
+						"</div>" +
+						"</div>" +
+						"</div>" +
+						"</div>";
+					}
 			})
 			str += "<div class='col-12'>" +
 				"<div class='view-more-btn'>" +
@@ -278,7 +296,7 @@ function getNewBicycle() {
 				"</div>";
 			$("#newBicycle").html(str);
 		} else {
-			alert("未查询到任何信息!");
+			// alert("未查询到任何信息!");
 		}
 	})
 }
@@ -290,18 +308,26 @@ function getHotBicycle() {
 	var json = {};
 	json["pageIndex"] = "";
 	json['delstate'] = 103;
-	json['pageSize'] = 6;
+	json['pageSize'] = 8;
 	url = "queryDelstateBicycle";
 	MySubmitString(JSON.stringify(json), url, function(data) {
 		if (data != null && data.msg == "ok") {
 			var str = "";
 			var array = data.bicyclelist;
 			$.each(array, function(index, element) {
+				var secondphoto = "";
+				if(element['secondphoto']!=''){
+					secondphoto = element['secondphoto'];
+				}
+				else{
+					secondphoto = element['firstphoto'];
+				}
+				if(element["delstate"]>0){
 				str += "<div class='product-item'>" +
 					"<figure class='product-thumb'>" +
 					"<a href='javascript:void(0);' onclick='getbicycleById(" + element['bicycleid'] + ")'>" +
 					"<img class='pri-img' src='" + element['firstphoto'] + "' alt='product'>" +
-					"<img class='sec-img' src='" + element['secondphoto'] + "' alt='product'>" +
+					"<img class='sec-img' src='" + secondphoto + "' alt='product'>" +
 					"</a>" +
 					"<div class='product-badge'>" +
 					"<div class='product-label new'>" +
@@ -321,15 +347,16 @@ function getHotBicycle() {
 					"</a>" +
 					"</p>" +
 					"<div class='price-box'>" +
-					"<span class='price-regular'>$" + element['money'] + "</span>" +
-					"<span class='price-old'><del>$" + element['money'] * 1.2 + "</del></span>" +
+					"<span class='price-regular'>$" + element['money'].toFixed(2) + "</span>" +
+					"<span class='price-old'><del>$" + (element['money'] * 1.2).toFixed(2) + "</del></span>" +
 					"</div>" +
 					"</div>" +
 					"</div>";
+					}
 			})
 			$("#hotBicycle").html(str);
 		} else {
-			alert("未查询到任何信息!");
+			// alert("未查询到任何信息!");
 		}
 	})
 }
@@ -343,7 +370,7 @@ function getHotBicycle() {
 function insertShopCar(bicycleId, num, money) {
 	var userjson = window.sessionStorage.getItem("userjson");
 	// alert(cookie);
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -372,7 +399,7 @@ function insertShopCar(bicycleId, num, money) {
  */
 function insertCollect(bicycleId) {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -397,7 +424,7 @@ function insertCollect(bicycleId) {
  */
 function getShopCarNum() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -416,7 +443,7 @@ function getShopCarNum() {
  */
 function getCollectNum() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -435,7 +462,7 @@ function getCollectNum() {
  */
 function queryShopCarByUserId() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -443,6 +470,7 @@ function queryShopCarByUserId() {
 		url = "queryShopCar";
 		MySubmitString(JSON.stringify(json), url, function(data) {
 			if (data != null && data.msg == "ok") {
+				console.log(JSON.stringify(data));
 				window.sessionStorage.setItem("allshopcar", JSON.stringify(data));
 				// window.location.href ="product-details.html";
 			} else {
@@ -461,7 +489,7 @@ function queryShopCarByUserId() {
  */
 function getShopCar() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var allshopcar = window.sessionStorage.getItem("allshopcar");
 		var str = "";
 		var mydata = $.parseJSON(allshopcar);
@@ -506,7 +534,7 @@ function getShopCar() {
  */
 function getShopCarMyAccount() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var allshopcar = window.sessionStorage.getItem("allshopcar");
 		var str = "";
 		var mydata = $.parseJSON(allshopcar);
@@ -543,12 +571,57 @@ function getShopCarMyAccount() {
 }
 
 /**
+ * 查询渲染购物车页面购物车cart.html
+ */
+function getShopCarMyCart() {
+	var userjson = window.sessionStorage.getItem("userjson");
+	if (userjson != null && userjson != '') {
+		var allshopcar = window.sessionStorage.getItem("allshopcar");
+		var str = "";
+		var mydata = $.parseJSON(allshopcar);
+		var array = mydata.shopcarlist;
+		str += "<table class='table table-bordered'>" + 
+				"<thead>" + 
+				"    <tr>" + 
+				"    	<th class='pro-thumbnail'>全选</th>" + 
+				"        <th class='pro-thumbnail'>图片</th>" + 
+				"        <th class='pro-title'>名称</th>" + 
+				"        <th class='pro-price'>价钱</th>" + 
+				"        <th class='pro-quantity'>数量</th>" + 
+				"        <th class='pro-subtotal'>合计</th>" + 
+				"        <th class='pro-remove'>操作</th>" + 
+				"    </tr>" + 
+				"</thead>" + 
+				"<tbody>";
+		$.each(array, function(index, element) {
+			str+="    <tr>" + 
+				"    	<td><input type='checkbox' class='mycheckbox' name='"+element['num']+";"+ (element['bicycle'].money*element['num']).toFixed(2) + "' value='" + (index+1) + "'></input></td>" + 
+				"        <td class='pro-thumbnail'><a href='javascript:void(0)' onclick='getbicycleById(" + element['bicycle'].bicycleid + ")'><img class='img-fluid' src='" + element['bicycle'].firstphoto + "' alt='Product' /></a></td>" + 
+				"        <td class='pro-title'><a href='javascript:void(0)' onclick='getbicycleById(" + element['bicycle'].bicycleid + ")'>" + element['bicycle'].name + "</a></td>" + 
+				"        <td class='pro-price'><span>$" + element['bicycle'].money.toFixed(2) + "</span></td>" + 
+				"        <td class='pro-quantity'>" + 
+				"            <div class='pro-qty'><input type='text' value='"+element['num']+"'></div>" + 
+				"        </td>" + 
+				"        <td class='pro-subtotal'><span>$" + (element['bicycle'].money*element['num']).toFixed(2) + "</span></td>" + 
+				"        <td class='pro-remove'><a href='javascript:void(0)' onclick='delOneShopCar(" + element['bicycle'].bicycleid + ")'><i class='fa fa-trash-o'></i></a></td>" + 
+				"    </tr>  ";
+		})
+		str += "</tbody>" +
+			"</table>";
+		$("#mycarshopcar").html(str);
+	} else {
+		alert("请先登录!");
+		window.location.href = "login.html";
+	}
+}
+
+/**
  * 删除购物车
  * @param {Object} bicycleid
  */
 function delOneShopCar(bicycleid) {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -560,6 +633,7 @@ function delOneShopCar(bicycleid) {
 				queryShopCarByUserId();
 				getShopCar();
 				getShopCarNum();
+				getShopCarMyCart();
 				alert("购物车删除成功!");
 			} else {
 				alert("购物车删除失败!");
@@ -576,7 +650,7 @@ function delOneShopCar(bicycleid) {
  */
 function queryCollectByUserId() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -601,7 +675,7 @@ function queryCollectByUserId() {
  */
 function queryCollectByUserIdMyAccount() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -625,7 +699,7 @@ function queryCollectByUserIdMyAccount() {
  */
 function getCollect() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var allcollect = window.sessionStorage.getItem("allcollect");
 		var str = "";
 		str += "<table class='table table-bordered'>" +
@@ -650,7 +724,7 @@ function getCollect() {
 				"<td class='pro-title'>" +
 				"<a href='#'>" + element['bicycle'].name + "</a>" +
 				"</td>" +
-				"<td class='pro-price'><span>$" + element['bicycle'].money + "</span></td>" +
+				"<td class='pro-price'><span>$" + element['bicycle'].money.toFixed(2) + "</span></td>" +
 				"<td class='pro-quantity'><span class='text-success'>" + element['bicycle'].inventory + "</span></td>" +
 				"<td class='pro-subtotal'>" +
 				"<a href='javascript:void(0);' onclick='insertShopCar(" + element['bicycle'].bicycleid + "," + 1 + "," + element[
@@ -677,7 +751,7 @@ function getCollect() {
  */
 function getCollectMyAccount() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var allcollect = window.sessionStorage.getItem("allcollect");
 		var str = "";
 		var mydata = $.parseJSON(allcollect);
@@ -698,7 +772,7 @@ function getCollectMyAccount() {
 				"<td>" + (index + 1) + "</td>" +
 				"<td><img src='" + element['bicycle'].firstphoto + "' /></td>" +
 				"<td>" + element['bicycle'].name + "</td>" +
-				"<td>$" + element['bicycle'].money + "</td>" +
+				"<td>$" + element['bicycle'].money.toFixed(2) + "</td>" +
 				"<td>" +
 				"<a href='javascript:void(0);' onclick='getbicycleById(" + element['bicycle'].bicycleid +
 				")' class='btn btn__bg'>详情</a>" +
@@ -719,7 +793,7 @@ function getCollectMyAccount() {
  */
 function delCollect(bicycleid) {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -745,7 +819,7 @@ function delCollect(bicycleid) {
  */
 function queryAddress() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		var json = {};
 		json['userid'] = mydata.user.userid;
@@ -806,7 +880,7 @@ function queryAddress() {
 function insertAddress() {
 	if ($("#confirm-name").val() != "" && $("#confirm-tel").val() != "") {
 		var userjson = window.sessionStorage.getItem("userjson");
-		if (userjson != null&&userjson!='') {
+		if (userjson != null && userjson != '') {
 			var mydata = $.parseJSON(userjson);
 			var json = {};
 			json['userid'] = mydata.user.userid;
@@ -840,7 +914,7 @@ function insertAddress() {
  */
 function delAddress(addressid) {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var json = {};
 		json['userid'] = mydata.user.userid;
 		json['adsid'] = addressid;
@@ -867,7 +941,7 @@ function delAddress(addressid) {
  */
 function setAddressDefaultStatus(addressid) {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var json = {};
 		json['userid'] = mydata.user.userid;
 		json['adsid'] = addressid;
@@ -983,7 +1057,7 @@ $('body').on('change', '#city', function() {
  */
 function getUpdateMessage() {
 	var userjson = window.sessionStorage.getItem("userjson");
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydata = $.parseJSON(userjson);
 		$("#display-name").attr("value", mydata.user.name);
 		$("#display-numid").attr("value", mydata.user.idnumber);
@@ -1002,7 +1076,7 @@ function updateUserMessage() {
 	var userjson = window.sessionStorage.getItem("userjson");
 	var json = {};
 	var flag = 0;
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydate = $.parseJSON(userjson);
 		json['userid'] = mydata.user.userid;
 		if (mydate.user.email != $("#email").val()) {
@@ -1072,32 +1146,29 @@ function updatePassword() {
 	json['name'] = "";
 	json['idnumber'] = "";
 	json['userstate'] = "";
-	if (userjson != null&&userjson!='') {
+	if (userjson != null && userjson != '') {
 		var mydate = $.parseJSON(userjson);
 		json['userid'] = mydata.user.userid;
-		if($("#current-pwd").val()!=''){
+		if ($("#current-pwd").val() != '') {
 			var pwd = $.md5($("#current-pwd").val());
-			if(mydate.user.password==pwd){
-				if($("#new-pwd").val()!=''&&$("confirm-pwd").val()!=''){
-					if($("#new-pwd").val()==$("#confirm-pwd").val()){
+			if (mydate.user.password == pwd) {
+				if ($("#new-pwd").val() != '' && $("confirm-pwd").val() != '') {
+					if ($("#new-pwd").val() == $("#confirm-pwd").val()) {
 						json['password'] = $("#new-pwd").val();
 						url = "updateUserPassword";
 						MySubmitString(JSON.stringify(json), url, function(data) {
 							if (data != null && data.msg == "ok") {
 								alert("密码修改成功！请重新登录！")
 								window.location.href = "login.html";
-							} 
-							else {
+							} else {
 								alert("密码修改失败!");
 							}
 						})
-					}
-					else{
+					} else {
 						alert("输入的两次密码不一致");
 					}
 				}
-			}
-			else{
+			} else {
 				alert("旧密码错误！");
 			}
 		}
@@ -1128,7 +1199,7 @@ function delCookie(name) {
 	exp.setTime(exp.getTime() - 1);
 	var cval = getCookie(name);
 	if (cval != null)
-		document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString()+"; path=/";
+		document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString() + "; path=/";
 }
 
 /**
@@ -1139,3 +1210,122 @@ function quitAccpount() {
 	window.sessionStorage.setItem("userjson", "");
 	window.location.href = "login.html";
 }
+
+/**
+ * 用户反馈添加
+ */
+function sentFeedBack() {
+	if ($("#name").val() != '' && $("#tel").val() != '' && $("#email").val() != '' && $("#issue").val() != '' && $(
+			"#voicemessage").val() != '') {
+		var json = {};
+		json['name'] = $("#name").val();
+		json['tel'] = $("#tel").val();
+		json['email'] = $("#email").val();
+		json['issue'] = $("#issue").val();
+		json['voiceMessage'] = $("#voicemessage").val();
+		url = "insertUserFeedBack";
+		MySubmitString(JSON.stringify(json), url, function(data) {
+			if(data!=null&&data.msg=="ok"){
+				alert("发送成功！");
+			}
+			else{
+				alert("发送失败！");
+			}
+		})
+	}
+}
+
+/**
+ * 添加订单
+ */
+function inderOrder(){
+	var str = "";
+	var userjson = window.sessionStorage.getItem("userjson");
+	var allshopcar = window.sessionStorage.getItem("allshopcar");
+	var mydateuserjson = $.parseJSON(userjson);
+	var mydata = $.parseJSON(allshopcar);
+	var array = mydata.shopcarlist;
+	var json = {};
+	var jsonones = [];
+	var flag = 0;
+	$.each($('input:checkbox'), function() {
+		if (this.checked) {
+			flag+=1;
+			jsonones.push(array[$(this).val()-1]);
+		}
+		
+	});
+	if(flag>0){
+		json['totalnum'] = $("#total-num").html();
+		json['totalmoney'] = $("#total-money").html();
+		json['userid'] = mydateuserjson.user.userid;
+		json['bicycles'] = jsonones;
+		console.log(json);
+	}
+	url = "insertOrder";
+	MySubmitString(JSON.stringify(json), url, function(data) {
+		if(data!=null&&data.msg=="ok"){
+			alert("订单提交成功！");
+			window.sessionStorage.setItem("orderno",data.orderno);
+			window.location.href="checkout.html";
+		}
+		else if(data!=null&&data.msg=="NOT_LIST"){
+			alert("你还没添加收货地址呢，快去添加一个吧！");
+		}
+		else{
+			alert("订单提交失败！");
+		}
+	})
+}
+
+/**
+ * 通过订单编号查询订单详情
+ */
+function queryOrderDetailByOrderNo(){
+	var orderno = window.sessionStorage.getItem("orderno");
+	if(orderno!=null&&orderno!=''){
+		var json = {}
+		json['orderno'] = orderno;
+		var url="queryOrderDetailByOrderNo";
+		MySubmitString(JSON.stringify(json), url, function(data) {
+			if(data!=null&&data.msg=="ok"){
+				var str="<table class='table table-bordered'>" + 
+				"<thead>" + 
+				"	<tr>" + 
+				"		<th><strong>商品</strong></th>" + 
+				"		<th><strong>总价</strong></th>" + 
+				"	</tr>" + 
+				"</thead>" + 
+				"<tbody>";
+				var array = data.allorderformdetail;
+				var totalmoney = 0.0;
+				$.each(array, function(index, element) {
+					str+="	<tr>" + 
+					"		<td>" + 
+					"			<a href='product-details.html'>"+element['bicycle'].name+"<strong> × "+element['num']+"</strong></a>" + 
+					"		</td>" + 
+					"		<td>$"+(element['bicycle'].money*element['num']).toFixed(2)+"</td>" + 
+					"	</tr>";
+					totalmoney += parseFloat(element['bicycle'].money*element['num']);
+				})
+				str+="</tbody>" + 
+				"<tfoot>" + 
+				"	<tr>" + 
+				"		<td>合计金额</td>" + 
+				"		<td>$"+totalmoney.toFixed(2)+"</td>" + 
+				"	</tr>		" + 
+				"</tfoot>" + 
+				"</table>";
+				$("#orderCheckOut").html(str);
+			}
+			else{
+				alert("未查询到任何订单详情！");
+			}
+		})
+	}
+}
+
+function payOrder(){
+	
+}
+
