@@ -8,3 +8,7 @@
 .visibility{
 	visibility:hidden;
 }
+
+.width50{
+	width: 49% !important;
+}

@@ -37,6 +37,7 @@ function MySubmit(formName,url,callback) {
 		xhrFields: {
 			withCredentials: true,
 		},
+		async:false,
 		data: {
 			message:JSON.stringify(formdate)
 		},
@@ -63,6 +64,30 @@ function MySubmitString(str,url,callback) {
 		data: {
 			message:str
 		},
+		async:false,
+		success: function (result) {
+			console.log(result);//打印服务端返回的数据(调试用)
+			callback(result);
+		},
+		error : function(error) {
+			console.log(error);
+			alert("我去,网咋还断了！");
+		}
+	});
+}
+
+function PaySubmitString(str,url,callback) {
+	$.ajax({
+		//几个参数需要注意一下
+		type: "POST",//方法类型
+		url: "http://localhost:9090/BicycleSales/"+url+".do" ,//url
+		xhrFields: {
+			withCredentials: true,
+		},
+		data: {
+			message:str
+		},
+		async:false,
 		success: function (result) {
 			console.log(result);//打印服务端返回的数据(调试用)
 			callback(result);

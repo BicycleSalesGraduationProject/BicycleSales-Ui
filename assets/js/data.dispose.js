@@ -553,7 +553,7 @@ function getShopCarMyAccount() {
 		$.each(array, function(index, element) {
 			str += "<tr>" +
 				"<td>" + (index + 1) + "</td>" +
-				"<td><img src='" + element['bicycle'].firstphoto + "' /></td>" +
+				"<td><img style='width: 60px;height: 60px;' src='" + element['bicycle'].firstphoto + "' /></td>" +
 				"<td>" + element['bicycle'].name + "</td>" +
 				"<td>$" + element['bicycle'].money + "</td>" +
 				"<td>" +
@@ -770,7 +770,7 @@ function getCollectMyAccount() {
 		$.each(array, function(index, element) {
 			str += "<tr>" +
 				"<td>" + (index + 1) + "</td>" +
-				"<td><img src='" + element['bicycle'].firstphoto + "' /></td>" +
+				"<td><img style='width: 60px;height: 60px;' src='" + element['bicycle'].firstphoto + "' /></td>" +
 				"<td>" + element['bicycle'].name + "</td>" +
 				"<td>$" + element['bicycle'].money.toFixed(2) + "</td>" +
 				"<td>" +
@@ -1179,6 +1179,55 @@ function updatePassword() {
 }
 
 /**
+ * 忘记密码的密码修改
+ */
+function updatePasswordForget() {
+	var appEmailVerifyCode = window.sessionStorage.getItem("appEmailVerifyCode");
+	if(appEmailVerifyCode!=null&&appEmailVerifyCode!=''){
+		var mydata = $.parseJSON(appEmailVerifyCode);
+		if(mydata.msg=="ok"){
+			var json = {};
+			json['name'] = "";
+			json['idnumber'] = "";
+			json['userstate'] = "";
+			json['code'] = mydata.code;
+			json['email'] = mydata.email;
+			if ($("#new-pwd").val() != '' && $("confirm-pwd").val() != '') {
+				if ($("#new-pwd").val() == $("#confirm-pwd").val()) {
+					json['password'] = $("#new-pwd").val();
+					url = "updateUserPasswordByEmail";
+					MySubmitString(JSON.stringify(json), url, function(data) {
+						if (data != null && data.msg == "ok") {
+							alert("密码修改成功！请重新登录！")
+							window.location.href = "login.html";
+						} else {
+							alert("密码修改失败!");
+						}
+					})
+				} else {
+					alert("输入的两次密码不一致");
+				}
+			}
+		}
+		else{
+			alert("邮箱验证失败，请重新验证！");
+			window.location.href = "find-email.html";
+		}
+	}
+	else{
+		alert("验证超时，请重新验证邮箱！");
+		window.location.href = "find-email.html";
+	}
+	
+}
+
+function setCookie(key,value,t){
+    var oDate=new Date();
+    oDate.setDate(oDate.getDate()+t);
+    document.cookie=key+"="+value+"; expires="+oDate.toDateString()+ "; path=/";
+}
+
+/**
  * 获取cookie
  * @param {Object} name
  */
@@ -1312,11 +1361,12 @@ function queryOrderDetailByOrderNo(){
 				"<tfoot>" + 
 				"	<tr>" + 
 				"		<td>合计金额</td>" + 
-				"		<td>$"+totalmoney.toFixed(2)+"</td>" + 
+				"		<td>$<span id='totalmoney'>"+totalmoney.toFixed(2)+"</span></td>" + 
 				"	</tr>		" + 
 				"</tfoot>" + 
 				"</table>";
 				$("#orderCheckOut").html(str);
+				window.sessionStorage.setItem("totalmoney",totalmoney.toFixed(2))
 			}
 			else{
 				alert("未查询到任何订单详情！");
@@ -1326,6 +1376,200 @@ function queryOrderDetailByOrderNo(){
 }
 
 function payOrder(){
-	
+	if($("input[type='checkbox']").is(':checked')){
+		var radio = $("input[name='paymentmethod']:checked").val();
+		if(radio=='check'){
+			var json = {};
+			var url = "alipayTradePagePay";
+			json['outTradeNo'] = window.sessionStorage.getItem("orderno");
+			json['totalAmount'] = $("#totalmoney").html();
+			json['subject'] = "自行车销售";
+			json['body'] = "";
+			PaySubmitString(JSON.stringify(json), url, function(data) {
+				if(data!=null&&data!=''){
+					document.write(data);
+				}
+				else{
+					alert("支付失败！");
+				}
+			})
+		}
+		else{
+			alert("支付成功！")
+		}
+	}
 }
 
+/**
+ * 查询该用户的所有订单数据
+ */
+function queryOrderByUserId(){
+	var json = {};
+	var userjson = window.sessionStorage.getItem("userjson");
+	if(userjson!=null&&userjson!=''){
+		var mydateuserjson = $.parseJSON(userjson);
+		json['userid'] = mydateuserjson.user.userid;
+		var url = "queryOrderByUserId";
+		MySubmitString(JSON.stringify(json), url, function(data) {
+			if(data!=null&&data!=''){
+				window.sessionStorage.setItem("orderFormByUserId",JSON.stringify(data));
+				getOrderMyAccount();
+			}
+			else{
+				alert("未查询任何订单信息！");
+			}
+		})
+	}
+	else{
+		alert("请先登录！");
+	}
+}
+
+/**
+ * 将该用户的所有订单数据渲染到页面
+ */
+function getOrderMyAccount(){
+	var my = window.sessionStorage.getItem("orderFormByUserId");
+	if(my!=''&&my!=null){
+		var str="<table class='table table-bordered'>" +
+		"<thead class='thead-light'>" + 
+		"	<tr>" + 
+		"		<th>编号</th>" + 
+		"		<th>下单日期</th>" + 
+		"		<th>总价</th>" + 
+		"		<th>总数</th>" + 
+		"		<th>支付状态</th>" + 
+		"		<th>订单状态</th>" + 
+		"	</tr>" + 
+		"</thead>" + 
+		"<tbody>";
+		var mydata = $.parseJSON(my);
+		var array = mydata.OrderFormByUserIdList;
+		$.each(array, function(index, element) {
+			var paystatus = "";
+			var sendstaus = "";
+			if(element['orderformstate']==0){
+				sendstaus="订单取消";
+			}
+			else if(element['orderformstate']==3){
+				sendstaus="未发货";
+			}
+			else if(element['orderformstate']==4){
+				sendstaus="已发货";
+			}
+			else if(element['orderformstate']==5){
+				sendstaus="退货";
+			}
+			else if(element['orderformstate']==7){
+				sendstaus="配货中";
+			}
+			else if(element['orderformstate']==8){
+				sendstaus="配送中";
+			}
+			else{
+				sendstaus="完成";
+			}
+			if(element['paymoneystate']==1){
+				paystatus="未付款";
+			}
+			else{
+				paystatus="已付款";
+			}
+			str+="	<tr>" + 
+			"		<td>"+(index+1)+"</td>" + 
+			"		<td>"+ChangeDateFormat(element['createtime'].time)+"</td>" + 
+			"		<td>$"+element['totalmoney']+"</td>" + 
+			"		<td>"+element['totalnum']+"</td>" + 
+			"		<td>"+paystatus+"</td>" + 
+			"		<td>"+sendstaus+"</td>" + 
+			"	</tr>";
+		})
+		str+="</tbody>" + 
+		"</table>";
+		$("#myorderlist").html(str);
+	}
+	else{
+		alert("未查询到任何订单信息！");
+	}
+}
+
+function verificationCode(){
+	var appEmailVerifyCode = window.sessionStorage.getItem("appEmailVerifyCode");
+	if(appEmailVerifyCode!=null&&appEmailVerifyCode!=''){
+		var mycode = $.parseJSON(appEmailVerifyCode);
+		if(mycode.msg=="ok"){
+			var m = hex_md5($("#display-code").val());
+			if(mycode.code==m){
+				// mycode['email'] = $("#email").val();
+				// window.sessionStorage.setItem("appEmailVerifyCode",JSON.stringify(mycode));
+				window.location.href="update-password.html";
+			}
+			else{
+				alert("验证码错误！");
+			}
+		}
+		else{
+			alert("验证码错误，请重新获取！");
+		}
+	}
+	else{
+		alert("请获取验证码！");
+	}
+}
+
+function registerUser(){
+	if($("#rname").val()!=""&&$("#email").val()!=""&&$("#display-code").val()!=""&&$("#new-pwd").val()!=""&&$("#confirm-pwd").val()!=""){
+		var appEmailVerifyCode = window.sessionStorage.getItem("appEmailVerifyCode");
+		var json = {};
+		json['name'] = $("#rname").val();
+		json['email'] = $("#email").val();
+		json['code'] = $("#display-code").val();
+		json['idnumber'] = "";
+		var appEmailVerifyCode = window.sessionStorage.getItem("appEmailVerifyCode");
+		if(appEmailVerifyCode!=null&&appEmailVerifyCode!=''){ 
+			var mycode = $.parseJSON(appEmailVerifyCode);
+			if(mycode.msg=="ok"){
+				if(mycode.email==$("#email").val()){
+					var m = hex_md5($("#display-code").val());
+					if(mycode.code==m){
+						if($("#confirm-pwd").val()==$("#new-pwd").val()){
+							json['password'] = $("#confirm-pwd").val();
+							var url = "userRegister";
+							MySubmitString(JSON.stringify(json), url, function(data) {
+								if(data!=null&&data.msg=="ok"){
+									alert("注册成功！");
+									window.location.href="login.html";
+								}
+								else if(data!=null&&data.msg=="no_3"){
+									alert("该邮箱已被注册！");
+								}
+								else{
+									alert("注册失败！");
+								}
+							})
+						}
+						else{
+							alert("两次密码不一致！");
+						}
+					}
+					else{
+						alert("验证码错误！");
+					}
+				}
+				else{
+					var codenot = {};
+					codenot['msg'] = "no";
+					window.sessionStorage.setItem("appEmailVerifyCode",JSON.stringify(codenot));
+					alert("邮箱已改变，请重新获取验证码！");
+				}
+			}
+			else{
+				alert("验证码错误，请重新获取！");
+			}
+		}
+		else{
+			alert("请获取验证码！");
+		}
+		
+	}
+}
