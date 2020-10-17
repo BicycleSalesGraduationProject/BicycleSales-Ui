@@ -215,6 +215,8 @@ function getbicycle() {
 			$("#money").html("$" + mydata.bicycle.money.toFixed(2));
 			$("#oldmoney").html("<del>$" + (mydata.bicycle.money * 1.2).toFixed(2) + "</del>");
 			$("#inventory").html(mydata.bicycle.inventory + " 库存");
+			$("#insertCar").attr("onclick","insertShopCarProduct("+mydata.bicycle.bicycleid+",1)")
+			$("#insertCollect").attr("onclick","insertCollect("+mydata.bicycle.bicycleid+")");
 			//x上限，y下限
 			var x = 10000;
 			var y = 0;
@@ -394,6 +396,40 @@ function insertShopCar(bicycleId, num, money) {
 }
 
 /**
+ * 添加购物车 商品详情页
+ * @param {Object} bicycleId
+ * @param {Object} num
+ * @param {Object} money
+ */
+function insertShopCarProduct(bicycleId, num) {
+	var userjson = window.sessionStorage.getItem("userjson");
+	// alert(cookie);
+	if (userjson != null && userjson != '') {
+		var mydata = $.parseJSON(userjson);
+		var json = {};
+		var money = $("#money").html().replace("$","");
+		json['userid'] = mydata.user.userid;
+		json['bicycleid'] = bicycleId;
+		json['num'] = $("#tnum").val();
+		json['total'] = money * num;
+		url = "insertShopCar";
+		MySubmitString(JSON.stringify(json), url, function(data) {
+			if (data != null && data.msg == "ok") {
+				getShopCarNum();
+				alert("购物车添加成功!");
+				queryShopCarByUserId();
+				window.location.href="cart.html";
+			} else {
+				alert("购物车添加失败!");
+			}
+		})
+	} else {
+		alert("请先登录!");
+		window.location.href = "login.html";
+	}
+}
+
+/**
  * 添加收藏
  * @param {Object} bicycleId
  */
@@ -471,11 +507,11 @@ function queryShopCarByUserId() {
 		MySubmitString(JSON.stringify(json), url, function(data) {
 			if (data != null && data.msg == "ok") {
 				console.log(JSON.stringify(data));
-				window.sessionStorage.setItem("allshopcar", JSON.stringify(data));
 				// window.location.href ="product-details.html";
 			} else {
-				alert("你的购物车空空如也,快去添加一些吧!");
+				// alert("你的购物车空空如也,快去添加一些吧!");
 			}
+			window.sessionStorage.setItem("allshopcar", JSON.stringify(data));
 		});
 		getShopCar();
 	} else {
@@ -518,7 +554,7 @@ function getShopCar() {
 				"<button onclick='delOneShopCar(" + element['bicycle'].bicycleid + ")'><i class='lnr lnr-cross'></i></button>" +
 				"</li>";
 			totalnum += element['num'];
-			totalmoney += element['bicycle'].money;
+			totalmoney += element['total'];
 		})
 		$("#shopcarindex").html(str);
 		$("#totalnum").html(totalnum);
@@ -595,14 +631,14 @@ function getShopCarMyCart() {
 				"<tbody>";
 		$.each(array, function(index, element) {
 			str+="    <tr>" + 
-				"    	<td><input type='checkbox' class='mycheckbox' name='"+element['num']+";"+ (element['bicycle'].money*element['num']).toFixed(2) + "' value='" + (index+1) + "'></input></td>" + 
+				"    	<td><input type='checkbox' id='mycheckbox"+index+"' class='mycheckbox' name='"+element['num']+";"+ ((element['total']/element['num'])*element['num']).toFixed(2) + "' value='" + (index+1) + "'></input></td>" + 
 				"        <td class='pro-thumbnail'><a href='javascript:void(0)' onclick='getbicycleById(" + element['bicycle'].bicycleid + ")'><img class='img-fluid' src='" + element['bicycle'].firstphoto + "' alt='Product' /></a></td>" + 
 				"        <td class='pro-title'><a href='javascript:void(0)' onclick='getbicycleById(" + element['bicycle'].bicycleid + ")'>" + element['bicycle'].name + "</a></td>" + 
-				"        <td class='pro-price'><span>$" + element['bicycle'].money.toFixed(2) + "</span></td>" + 
+				"        <td class='pro-price'><span id='myprice"+index+"'>$" + (element['total']/element['num']).toFixed(2) + "</span></td>" + 
 				"        <td class='pro-quantity'>" + 
-				"            <div class='pro-qty'><input type='text' value='"+element['num']+"'></div>" + 
+				"            <div class=''><button onclick='add("+index+")'>+</button><input id='mynum"+index+"' type='text' value='"+element['num']+"'><button onclick='jian("+index+")'>-</button></div>" + 
 				"        </td>" + 
-				"        <td class='pro-subtotal'><span>$" + (element['bicycle'].money*element['num']).toFixed(2) + "</span></td>" + 
+				"        <td class='pro-subtotal'><span id='mytotal"+index+"'>$" + (element['total']).toFixed(2) + "</span></td>" + 
 				"        <td class='pro-remove'><a href='javascript:void(0)' onclick='delOneShopCar(" + element['bicycle'].bicycleid + ")'><i class='fa fa-trash-o'></i></a></td>" + 
 				"    </tr>  ";
 		})
@@ -612,6 +648,27 @@ function getShopCarMyCart() {
 	} else {
 		alert("请先登录!");
 		window.location.href = "login.html";
+	}
+}
+
+function add(id){
+	var mynum = parseInt($("#mynum"+id).val());
+	var newNum = mynum+1;
+	$("#mynum"+id).val(newNum);
+	var myprice = parseFloat($("#myprice"+id).html().replace("$",""));
+	$("#mytotal"+id).html("$"+(myprice*newNum).toFixed(2));
+	$("#mycheckbox"+id).attr("name",newNum+";"+(myprice*newNum).toFixed(2));
+}
+
+function jian(id){
+	var mynum = parseInt($("#mynum"+id).val());
+	if(mynum>1){
+		var newNum = mynum-1;
+		$("#mynum"+id).val(newNum);
+		var myprice = parseFloat($("#myprice"+id).html().replace("$",""));
+		$("#mytotal"+id).html("$"+(myprice*newNum).toFixed(2));
+		$("#mycheckbox"+id).attr("name",newNum+";"+(myprice*newNum).toFixed(2));
+		
 	}
 }
 
@@ -661,7 +718,7 @@ function queryCollectByUserId() {
 				window.sessionStorage.setItem("allcollect", JSON.stringify(data));
 				window.location.href = "wishlist.html";
 			} else {
-				alert("你的收藏空空如也,快去添加一些吧!");
+				// alert("你的收藏空空如也,快去添加一些吧!");
 			}
 		})
 	} else {
@@ -1300,7 +1357,12 @@ function inderOrder(){
 	$.each($('input:checkbox'), function() {
 		if (this.checked) {
 			flag+=1;
-			jsonones.push(array[$(this).val()-1]);
+			var da = array[$(this).val()-1];
+			var str = $(this).attr("name").split(";");
+			da['money'] = parseFloat(str[1]/str[0]).toFixed(2);
+			da['num'] = parseInt(str[0]);
+			da['total'] = parseFloat(str[1]).toFixed(2);
+			jsonones.push(da);
 		}
 		
 	});
@@ -1337,6 +1399,7 @@ function queryOrderDetailByOrderNo(){
 		json['orderno'] = orderno;
 		var url="queryOrderDetailByOrderNo";
 		MySubmitString(JSON.stringify(json), url, function(data) {
+			console.log(JSON.stringify(data));
 			if(data!=null&&data.msg=="ok"){
 				var str="<table class='table table-bordered'>" + 
 				"<thead>" + 
@@ -1351,11 +1414,11 @@ function queryOrderDetailByOrderNo(){
 				$.each(array, function(index, element) {
 					str+="	<tr>" + 
 					"		<td>" + 
-					"			<a href='product-details.html'>"+element['bicycle'].name+"<strong> × "+element['num']+"</strong></a>" + 
+					"			<a href='product-details.html'>"+element['bicycle'].name+"<strong></strong></a>" + 
 					"		</td>" + 
-					"		<td>$"+(element['bicycle'].money*element['num']).toFixed(2)+"</td>" + 
+					"		<td>$"+element['money']+"</td>" + 
 					"	</tr>";
-					totalmoney += parseFloat(element['bicycle'].money*element['num']);
+					totalmoney += parseFloat(element['money']);
 				})
 				str+="</tbody>" + 
 				"<tfoot>" + 
@@ -1493,6 +1556,9 @@ function getOrderMyAccount(){
 	}
 }
 
+/**
+ * 验证码校验
+ */
 function verificationCode(){
 	var appEmailVerifyCode = window.sessionStorage.getItem("appEmailVerifyCode");
 	if(appEmailVerifyCode!=null&&appEmailVerifyCode!=''){
@@ -1517,6 +1583,9 @@ function verificationCode(){
 	}
 }
 
+/**
+ * 注册用户
+ */
 function registerUser(){
 	if($("#rname").val()!=""&&$("#email").val()!=""&&$("#display-code").val()!=""&&$("#new-pwd").val()!=""&&$("#confirm-pwd").val()!=""){
 		var appEmailVerifyCode = window.sessionStorage.getItem("appEmailVerifyCode");
@@ -1571,5 +1640,24 @@ function registerUser(){
 			alert("请获取验证码！");
 		}
 		
+	}
+}
+
+/**
+ * 根据用户选择改变钱数
+ */
+function getMySelect(){
+	var my = window.sessionStorage.getItem("bicycle");
+	if (my != null && my != '') {
+		var mydata = $.parseJSON(my);
+		var totalMoney =  mydata.bicycle.money;
+		var zhibuo = $("#zhibuo").val();
+		var houbo = $("#houbo").val();
+		var qianbo = $("#qianbo").val();
+		var feilun = $("#feilun").val();
+		var liantiao = $("#liantiao").val();
+		totalMoney = parseFloat(totalMoney) + parseFloat(zhibuo) + parseFloat(houbo) + parseFloat(qianbo) + parseFloat(feilun) + parseFloat(liantiao);
+		$("#money").html("$"+totalMoney.toFixed(2));
+		$("#oldmoney").html("$"+(totalMoney*1.2).toFixed(2));
 	}
 }
